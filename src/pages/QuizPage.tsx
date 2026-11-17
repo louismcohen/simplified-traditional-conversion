@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Breakdown } from '../components/Breakdown'
 import { Kbd } from '../components/Kbd'
 import { divergentPairs } from '../data/hsk1-pairs'
 import { useHotkeys } from '../hooks/useHotkeys'
@@ -186,10 +187,21 @@ export function QuizPage() {
         </div>
 
         {selected !== null ? (
-          <button type="button" onClick={goNext} className="btn-primary mt-6">
-            {index + 1 >= questions.length ? 'See results' : 'Next'}
-            <Kbd>Enter</Kbd>
-          </button>
+          <div className="mt-6 space-y-4">
+            {current.mode === 'to-trad' ? (
+              <div className="flex justify-center">
+                <Breakdown traditional={current.answer} compact />
+              </div>
+            ) : (
+              <div className="flex justify-center">
+                <Breakdown traditional={current.prompt} compact />
+              </div>
+            )}
+            <button type="button" onClick={goNext} className="btn-primary">
+              {index + 1 >= questions.length ? 'See results' : 'Next'}
+              <Kbd>Enter</Kbd>
+            </button>
+          </div>
         ) : null}
       </div>
     </div>

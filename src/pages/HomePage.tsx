@@ -13,7 +13,7 @@ const methods = [
   {
     step: '02',
     title: 'Component patterns',
-    body: 'Simplification often shrank radicals (门←門, 讠←言). Learn the pattern once, then reverse it across many words.',
+    body: 'Simplification often shrank radicals (门←門, 讠←言). Learn the pattern once, then reverse it across many words. Flip cards also break each character into parts — meaning, sound, and a short story.',
     to: '/patterns',
     cta: 'Study patterns',
   },

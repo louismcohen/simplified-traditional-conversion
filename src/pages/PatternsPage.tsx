@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Breakdown } from '../components/Breakdown'
 import { Kbd } from '../components/Kbd'
 import { patterns } from '../data/patterns'
 import { useHotkeys } from '../hooks/useHotkeys'
@@ -128,20 +129,25 @@ export function PatternsPage() {
           </div>
         </div>
 
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+        <ul className="mt-6 grid gap-4">
           {pattern.examples.map((ex) => (
             <li
               key={`${ex.simplified}-${ex.traditional}`}
               className="rounded-xl border border-[var(--line)] bg-[var(--mist)] px-4 py-3"
             >
-              <p className="han text-2xl">
-                <span className="text-[var(--ink-soft)]">{ex.simplified}</span>
-                <span className="mx-2 text-[var(--accent)]">→</span>
-                <span className="font-semibold text-[var(--ink)]">{ex.traditional}</span>
-              </p>
-              <p className="mt-1 text-sm text-[var(--ink-soft)]">
-                {ex.pinyin} · {ex.meaning}
-              </p>
+              <div className="flex flex-wrap items-start justify-between gap-4">
+                <div>
+                  <p className="han text-2xl">
+                    <span className="text-[var(--ink-soft)]">{ex.simplified}</span>
+                    <span className="mx-2 text-[var(--accent)]">→</span>
+                    <span className="font-semibold text-[var(--ink)]">{ex.traditional}</span>
+                  </p>
+                  <p className="mt-1 text-sm text-[var(--ink-soft)]">
+                    {ex.pinyin} · {ex.meaning}
+                  </p>
+                </div>
+                <Breakdown traditional={ex.traditional} compact />
+              </div>
             </li>
           ))}
         </ul>

@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { Breakdown } from '../components/Breakdown'
 import { Kbd } from '../components/Kbd'
 import { PairGlyph } from '../components/PairGlyph'
+import { getBreakdown } from '../data/breakdowns'
 import { divergentPairs, identicalPairs, type CharPair } from '../data/hsk1-pairs'
 import { patterns } from '../data/patterns'
 import { useHotkeys } from '../hooks/useHotkeys'
@@ -144,37 +146,44 @@ export function DrillPage() {
         </div>
       ) : null}
 
-      <button
-        type="button"
-        onClick={() => setFlipped((f) => !f)}
-        className="w-full rounded-2xl border border-[var(--line)] bg-white/80 px-4 py-10 text-center shadow-sm transition hover:border-[var(--ink-soft)]"
-      >
-        {!flipped ? (
-          <div className="char-pop space-y-3">
-            <p className="han text-7xl font-semibold sm:text-8xl">{current.simplified}</p>
-            <p className="text-sm text-[var(--ink-soft)]">
-              Flip <Kbd>Space</Kbd>
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <PairGlyph
-              simplified={current.simplified}
-              traditional={current.traditional}
-              identical={current.identical}
-              size="lg"
-            />
-            <p className="text-[var(--ink-soft)]">
-              {current.pinyin} · {current.meaning}
-            </p>
-            {pattern ? (
-              <p className="text-sm text-[var(--accent)]">
-                Pattern: {pattern.name} ({pattern.traditional} ↔ {pattern.simplified})
+      <div className="overflow-hidden rounded-2xl border border-[var(--line)] bg-white/80 shadow-sm">
+        <button
+          type="button"
+          onClick={() => setFlipped((f) => !f)}
+          className="w-full px-4 py-10 text-center transition hover:bg-white/90"
+        >
+          {!flipped ? (
+            <div className="char-pop space-y-3">
+              <p className="han text-7xl font-semibold sm:text-8xl">{current.simplified}</p>
+              <p className="text-sm text-[var(--ink-soft)]">
+                Flip <Kbd>Space</Kbd>
               </p>
-            ) : null}
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <PairGlyph
+                simplified={current.simplified}
+                traditional={current.traditional}
+                identical={current.identical}
+                size="lg"
+              />
+              <p className="text-[var(--ink-soft)]">
+                {current.pinyin} · {current.meaning}
+              </p>
+              {pattern ? (
+                <p className="text-sm text-[var(--accent)]">
+                  Pattern: {pattern.name} ({pattern.traditional} ↔ {pattern.simplified})
+                </p>
+              ) : null}
+            </div>
+          )}
+        </button>
+        {flipped && getBreakdown(current.traditional) ? (
+          <div className="flex justify-center border-t border-[var(--line)] bg-[var(--mist)]/50 px-4 py-4">
+            <Breakdown traditional={current.traditional} />
           </div>
-        )}
-      </button>
+        ) : null}
+      </div>
 
       <div className="flex flex-wrap justify-center gap-3">
         {mode === 'divergent' ? (

@@ -9,6 +9,8 @@ A small study app for learners at about **HSK 1 simplified** who want to move to
 3. **Divergent flashcards** — only HSK 1 items that actually differ  
 4. **Recognition ↔ production quiz** — simplified→traditional and traditional→meaning  
 
+Flipped drill cards, pattern examples, and quiz feedback include **component breakdowns** (radicals / sound parts + a short mnemonic).
+
 Progress (known cards, patterns done, quiz best) stays in the browser via `localStorage`.
 
 ## Run locally
