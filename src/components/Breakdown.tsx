@@ -10,7 +10,10 @@ function PartRow({ part }: { part: CharPart }) {
         ) : null}
       </div>
       <div className="min-w-0 flex-1 text-left">
-        <p className="text-sm font-medium text-[var(--ink)]">{part.gloss}</p>
+        <p className="text-sm font-medium text-[var(--ink)]">
+          <span className="mr-2 font-normal text-[var(--ink-soft)]">{part.pinyin}</span>
+          {part.gloss}
+        </p>
         <p className="text-xs text-[var(--ink-faint)]">{roleText(part.role)}</p>
       </div>
     </li>
