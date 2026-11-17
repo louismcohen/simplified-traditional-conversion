@@ -1,0 +1,118 @@
+export type CharPair = {
+  id: string
+  simplified: string
+  traditional: string
+  pinyin: string
+  meaning: string
+  identical: boolean
+  patternId?: string
+}
+
+/**
+ * Curated HSK 1–aligned pairs (Taiwan traditional).
+ * Includes identical forms so learners can see what they already know.
+ */
+export const hsk1Pairs: CharPair[] = [
+  // Identical — keep studying energy for the rest
+  { id: 'wo', simplified: '我', traditional: '我', pinyin: 'wǒ', meaning: 'I / me', identical: true },
+  { id: 'ni', simplified: '你', traditional: '你', pinyin: 'nǐ', meaning: 'you', identical: true },
+  { id: 'ta', simplified: '他', traditional: '他', pinyin: 'tā', meaning: 'he', identical: true },
+  { id: 'ta-f', simplified: '她', traditional: '她', pinyin: 'tā', meaning: 'she', identical: true },
+  { id: 'hao', simplified: '好', traditional: '好', pinyin: 'hǎo', meaning: 'good', identical: true },
+  { id: 'shi', simplified: '是', traditional: '是', pinyin: 'shì', meaning: 'to be', identical: true },
+  { id: 'bu', simplified: '不', traditional: '不', pinyin: 'bù', meaning: 'not', identical: true },
+  { id: 'zai', simplified: '在', traditional: '在', pinyin: 'zài', meaning: 'at / in', identical: true },
+  { id: 'you', simplified: '有', traditional: '有', pinyin: 'yǒu', meaning: 'have', identical: true },
+  { id: 'he', simplified: '和', traditional: '和', pinyin: 'hé', meaning: 'and', identical: true },
+  { id: 'de', simplified: '的', traditional: '的', pinyin: 'de', meaning: 'possessive', identical: true },
+  { id: 'le', simplified: '了', traditional: '了', pinyin: 'le', meaning: 'aspect particle', identical: true },
+  { id: 'kan', simplified: '看', traditional: '看', pinyin: 'kàn', meaning: 'look', identical: true },
+  { id: 'chi', simplified: '吃', traditional: '吃', pinyin: 'chī', meaning: 'eat', identical: true },
+  { id: 'he2', simplified: '喝', traditional: '喝', pinyin: 'hē', meaning: 'drink', identical: true },
+  { id: 'shui', simplified: '水', traditional: '水', pinyin: 'shuǐ', meaning: 'water', identical: true },
+  { id: 'cha', simplified: '茶', traditional: '茶', pinyin: 'chá', meaning: 'tea', identical: true },
+  { id: 'da', simplified: '大', traditional: '大', pinyin: 'dà', meaning: 'big', identical: true },
+  { id: 'xiao', simplified: '小', traditional: '小', pinyin: 'xiǎo', meaning: 'small', identical: true },
+  { id: 'duo', simplified: '多', traditional: '多', pinyin: 'duō', meaning: 'many', identical: true },
+  { id: 'shao', simplified: '少', traditional: '少', pinyin: 'shǎo', meaning: 'few', identical: true },
+  { id: 'nian', simplified: '年', traditional: '年', pinyin: 'nián', meaning: 'year', identical: true },
+  { id: 'yue', simplified: '月', traditional: '月', pinyin: 'yuè', meaning: 'month / moon', identical: true },
+  { id: 'ri', simplified: '日', traditional: '日', pinyin: 'rì', meaning: 'day / sun', identical: true },
+  { id: 'tian', simplified: '天', traditional: '天', pinyin: 'tiān', meaning: 'day / sky', identical: true },
+  { id: 'shang', simplified: '上', traditional: '上', pinyin: 'shàng', meaning: 'up / on', identical: true },
+  { id: 'xia', simplified: '下', traditional: '下', pinyin: 'xià', meaning: 'down / under', identical: true },
+  { id: 'zhong', simplified: '中', traditional: '中', pinyin: 'zhōng', meaning: 'middle', identical: true },
+  { id: 'zuo', simplified: '坐', traditional: '坐', pinyin: 'zuò', meaning: 'sit', identical: true },
+  { id: 'qu', simplified: '去', traditional: '去', pinyin: 'qù', meaning: 'go', identical: true },
+
+  // Divergent — the real study set
+  { id: 'men', simplified: '们', traditional: '們', pinyin: 'men', meaning: 'plural marker', identical: false, patternId: 'men' },
+  { id: 'ma', simplified: '吗', traditional: '嗎', pinyin: 'ma', meaning: 'question particle', identical: false, patternId: 'ma' },
+  { id: 'ma2', simplified: '妈', traditional: '媽', pinyin: 'mā', meaning: 'mom', identical: false, patternId: 'ma' },
+  { id: 'wen', simplified: '问', traditional: '問', pinyin: 'wèn', meaning: 'ask', identical: false, patternId: 'men' },
+  { id: 'jian', simplified: '间', traditional: '間', pinyin: 'jiān', meaning: 'between', identical: false, patternId: 'men' },
+  { id: 'men2', simplified: '门', traditional: '門', pinyin: 'mén', meaning: 'door', identical: false, patternId: 'men' },
+  { id: 'shuo', simplified: '说', traditional: '說', pinyin: 'shuō', meaning: 'speak', identical: false, patternId: 'yan' },
+  { id: 'hua', simplified: '话', traditional: '話', pinyin: 'huà', meaning: 'words', identical: false, patternId: 'yan' },
+  { id: 'yu', simplified: '语', traditional: '語', pinyin: 'yǔ', meaning: 'language', identical: false, patternId: 'yan' },
+  { id: 'qing', simplified: '请', traditional: '請', pinyin: 'qǐng', meaning: 'please', identical: false, patternId: 'yan' },
+  { id: 'xie', simplified: '谢', traditional: '謝', pinyin: 'xiè', meaning: 'thank', identical: false, patternId: 'yan' },
+  { id: 'ren', simplified: '认', traditional: '認', pinyin: 'rèn', meaning: 'recognize', identical: false, patternId: 'yan' },
+  { id: 'shi2', simplified: '识', traditional: '識', pinyin: 'shí', meaning: 'know', identical: false, patternId: 'yan' },
+  { id: 'du', simplified: '读', traditional: '讀', pinyin: 'dú', meaning: 'read', identical: false },
+  { id: 'xie3', simplified: '写', traditional: '寫', pinyin: 'xiě', meaning: 'write', identical: false },
+  { id: 'ting', simplified: '听', traditional: '聽', pinyin: 'tīng', meaning: 'listen', identical: false },
+  { id: 'jian2', simplified: '见', traditional: '見', pinyin: 'jiàn', meaning: 'see', identical: false, patternId: 'jian' },
+  { id: 'xian', simplified: '现', traditional: '現', pinyin: 'xiàn', meaning: 'now / appear', identical: false, patternId: 'jian' },
+  { id: 'jue', simplified: '觉', traditional: '覺', pinyin: 'jué', meaning: 'feel', identical: false, patternId: 'jian' },
+  { id: 'xue', simplified: '学', traditional: '學', pinyin: 'xué', meaning: 'study', identical: false },
+  { id: 'xi', simplified: '习', traditional: '習', pinyin: 'xí', meaning: 'practice', identical: false },
+  { id: 'guo', simplified: '国', traditional: '國', pinyin: 'guó', meaning: 'country', identical: false },
+  { id: 'zhe', simplified: '这', traditional: '這', pinyin: 'zhè', meaning: 'this', identical: false },
+  { id: 'lai', simplified: '来', traditional: '來', pinyin: 'lái', meaning: 'come', identical: false },
+  { id: 'lai2', simplified: '还', traditional: '還', pinyin: 'hái / huán', meaning: 'still / return', identical: false },
+  { id: 'guo2', simplified: '过', traditional: '過', pinyin: 'guò', meaning: 'pass / aspect', identical: false },
+  { id: 'mei', simplified: '没', traditional: '沒', pinyin: 'méi', meaning: 'not have', identical: false },
+  { id: 'hui', simplified: '会', traditional: '會', pinyin: 'huì', meaning: 'can / meeting', identical: false },
+  { id: 'kai', simplified: '开', traditional: '開', pinyin: 'kāi', meaning: 'open', identical: false },
+  { id: 'guan', simplified: '关', traditional: '關', pinyin: 'guān', meaning: 'close', identical: false },
+  { id: 'dui', simplified: '对', traditional: '對', pinyin: 'duì', meaning: 'correct / pair', identical: false },
+  { id: 'ge', simplified: '个', traditional: '個', pinyin: 'gè', meaning: 'general measure', identical: false },
+  { id: 'dian', simplified: '点', traditional: '點', pinyin: 'diǎn', meaning: 'o’clock / a bit', identical: false },
+  { id: 'zhong2', simplified: '钟', traditional: '鐘', pinyin: 'zhōng', meaning: 'clock', identical: false, patternId: 'jin' },
+  { id: 'qian', simplified: '钱', traditional: '錢', pinyin: 'qián', meaning: 'money', identical: false, patternId: 'jin' },
+  { id: 'mai', simplified: '买', traditional: '買', pinyin: 'mǎi', meaning: 'buy', identical: false, patternId: 'bei' },
+  { id: 'mai2', simplified: '卖', traditional: '賣', pinyin: 'mài', meaning: 'sell', identical: false },
+  { id: 'kuai', simplified: '块', traditional: '塊', pinyin: 'kuài', meaning: 'piece / yuan', identical: false },
+  { id: 'fan', simplified: '饭', traditional: '飯', pinyin: 'fàn', meaning: 'meal', identical: false, patternId: 'shi' },
+  { id: 'guan2', simplified: '馆', traditional: '館', pinyin: 'guǎn', meaning: 'shop / hall', identical: false, patternId: 'shi' },
+  { id: 'che', simplified: '车', traditional: '車', pinyin: 'chē', meaning: 'car', identical: false, patternId: 'che' },
+  { id: 'fei', simplified: '飞', traditional: '飛', pinyin: 'fēi', meaning: 'fly', identical: false },
+  { id: 'ji', simplified: '机', traditional: '機', pinyin: 'jī', meaning: 'machine', identical: false },
+  { id: 'dian2', simplified: '电', traditional: '電', pinyin: 'diàn', meaning: 'electricity', identical: false },
+  { id: 'nao', simplified: '脑', traditional: '腦', pinyin: 'nǎo', meaning: 'brain', identical: false },
+  { id: 'shi3', simplified: '视', traditional: '視', pinyin: 'shì', meaning: 'vision', identical: false },
+  { id: 'huan', simplified: '欢', traditional: '歡', pinyin: 'huān', meaning: 'joy', identical: false },
+  { id: 'ai', simplified: '爱', traditional: '愛', pinyin: 'ài', meaning: 'love', identical: false },
+  { id: 're', simplified: '热', traditional: '熱', pinyin: 'rè', meaning: 'hot', identical: false },
+  { id: 'qi', simplified: '气', traditional: '氣', pinyin: 'qì', meaning: 'air / spirit', identical: false },
+  { id: 'dong', simplified: '东', traditional: '東', pinyin: 'dōng', meaning: 'east', identical: false },
+  { id: 'li', simplified: '里', traditional: '裡', pinyin: 'lǐ', meaning: 'inside', identical: false },
+  { id: 'hou', simplified: '后', traditional: '後', pinyin: 'hòu', meaning: 'after / behind', identical: false },
+  { id: 'wei', simplified: '为', traditional: '為', pinyin: 'wèi / wéi', meaning: 'for / as', identical: false },
+  { id: 'me', simplified: '么', traditional: '麼', pinyin: 'me', meaning: 'suffix (什么)', identical: false },
+  { id: 'ji2', simplified: '几', traditional: '幾', pinyin: 'jǐ', meaning: 'how many', identical: false },
+  { id: 'shui2', simplified: '谁', traditional: '誰', pinyin: 'shéi', meaning: 'who', identical: false },
+  { id: 'hao2', simplified: '号', traditional: '號', pinyin: 'hào', meaning: 'number', identical: false },
+  { id: 'sui', simplified: '岁', traditional: '歲', pinyin: 'suì', meaning: 'years old', identical: false },
+  { id: 'cong', simplified: '从', traditional: '從', pinyin: 'cóng', meaning: 'from', identical: false },
+  { id: 'gei', simplified: '给', traditional: '給', pinyin: 'gěi', meaning: 'give', identical: false },
+  { id: 'yi', simplified: '医', traditional: '醫', pinyin: 'yī', meaning: 'medicine', identical: false },
+  { id: 'han', simplified: '汉', traditional: '漢', pinyin: 'hàn', meaning: 'Chinese (ethnicity)', identical: false },
+  { id: 'mao', simplified: '猫', traditional: '貓', pinyin: 'māo', meaning: 'cat', identical: false },
+  { id: 'chang', simplified: '长', traditional: '長', pinyin: 'cháng', meaning: 'long', identical: false, patternId: 'chang' },
+  { id: 'shi4', simplified: '时', traditional: '時', pinyin: 'shí', meaning: 'time', identical: false },
+]
+
+export const identicalPairs = hsk1Pairs.filter((p) => p.identical)
+export const divergentPairs = hsk1Pairs.filter((p) => !p.identical)
