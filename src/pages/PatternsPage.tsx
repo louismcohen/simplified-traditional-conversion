@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { Kbd } from '../components/Kbd'
 import { patterns } from '../data/patterns'
+import { useHotkeys } from '../hooks/useHotkeys'
 import { loadProgress, markPatternDone } from '../lib/progress'
 
 export function PatternsPage() {
@@ -29,20 +31,58 @@ export function PatternsPage() {
     setIndex((i) => Math.min(i + 1, patterns.length - 1))
   }
 
+  useHotkeys({
+    ArrowLeft: () => {
+      setQuizOpen(false)
+      setChoice(null)
+      setIndex((i) => Math.max(0, i - 1))
+    },
+    ArrowRight: () => {
+      setQuizOpen(false)
+      setChoice(null)
+      setIndex((i) => Math.min(patterns.length - 1, i + 1))
+    },
+    q: () => {
+      if (!quizOpen) {
+        setQuizOpen(true)
+        setChoice(null)
+      }
+    },
+    Escape: () => {
+      setQuizOpen(false)
+      setChoice(null)
+    },
+    Enter: () => {
+      if (choice !== null) completePattern()
+    },
+    '1': () => {
+      if (quizOpen && choice === null && options[0]) setChoice(options[0].traditional)
+    },
+    '2': () => {
+      if (quizOpen && choice === null && options[1]) setChoice(options[1].traditional)
+    },
+    '3': () => {
+      if (quizOpen && choice === null && options[2]) setChoice(options[2].traditional)
+    },
+    '4': () => {
+      if (quizOpen && choice === null && options[3]) setChoice(options[3].traditional)
+    },
+  })
+
   const allDone = done.size >= patterns.length
 
   return (
     <div className="rise-in space-y-6">
-      <section className="rounded-2xl border border-[var(--line)] bg-white/60 p-6 backdrop-blur-sm">
+      <section className="rounded-2xl border border-[var(--line)] bg-white/70 p-6 backdrop-blur-sm">
         <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">Method 02</p>
         <h2 className="display mt-2 text-3xl">Component patterns</h2>
         <p className="mt-2 text-sm text-[var(--ink-soft)]">
-          Learn each reversible radical once. {done.size}/{patterns.length} patterns marked done.
+          Learn each reversible radical once. {done.size}/{patterns.length} done · ← → to switch
         </p>
       </section>
 
       {allDone ? (
-        <div className="rounded-2xl border border-[var(--line)] bg-white/55 p-8 text-center">
+        <div className="rounded-2xl border border-[var(--line)] bg-white/70 p-8 text-center">
           <p className="han text-4xl text-[var(--accent)]">完</p>
           <h3 className="display mt-3 text-2xl">All patterns reviewed</h3>
           <p className="mt-2 text-sm text-[var(--ink-soft)]">
@@ -62,12 +102,12 @@ export function PatternsPage() {
               setChoice(null)
             }}
             className={[
-              'han rounded-full border px-3 py-1 text-sm transition',
+              'han chip',
               i === index
-                ? 'border-[var(--ink)] bg-[var(--ink)] text-white'
+                ? 'chip-active'
                 : done.has(p.id)
                   ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--accent)]'
-                  : 'border-[var(--line)] bg-white/60 text-[var(--ink-soft)]',
+                  : '',
             ].join(' ')}
           >
             {p.traditional}/{p.simplified}
@@ -75,7 +115,7 @@ export function PatternsPage() {
         ))}
       </div>
 
-      <article className="rounded-2xl border border-[var(--line)] bg-white/65 p-6 sm:p-8">
+      <article className="rounded-2xl border border-[var(--line)] bg-white/75 p-6 sm:p-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <h3 className="display text-2xl">{pattern.name}</h3>
@@ -92,12 +132,12 @@ export function PatternsPage() {
           {pattern.examples.map((ex) => (
             <li
               key={`${ex.simplified}-${ex.traditional}`}
-              className="rounded-xl border border-[var(--line)] bg-[var(--mist)]/70 px-4 py-3"
+              className="rounded-xl border border-[var(--line)] bg-[var(--mist)] px-4 py-3"
             >
               <p className="han text-2xl">
                 <span className="text-[var(--ink-soft)]">{ex.simplified}</span>
                 <span className="mx-2 text-[var(--accent)]">→</span>
-                <span className="font-semibold">{ex.traditional}</span>
+                <span className="font-semibold text-[var(--ink)]">{ex.traditional}</span>
               </p>
               <p className="mt-1 text-sm text-[var(--ink-soft)]">
                 {ex.pinyin} · {ex.meaning}
@@ -113,18 +153,20 @@ export function PatternsPage() {
               setQuizOpen(true)
               setChoice(null)
             }}
-            className="mt-6 rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white"
+            className="btn-primary mt-6"
           >
-            Mini-quiz this pattern
+            Mini-quiz
+            <Kbd>Q</Kbd>
           </button>
         ) : (
-          <div className="mt-6 rounded-xl border border-[var(--line)] bg-white/80 p-4">
+          <div className="mt-6 rounded-xl border border-[var(--line)] bg-white p-4">
             <p className="text-sm text-[var(--ink-soft)]">
               Which traditional form matches{' '}
               <span className="han text-lg text-[var(--ink)]">{quizExample.simplified}</span>?
+              <span className="ml-2 text-[var(--ink-faint)]">1–4</span>
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              {options.map((opt) => {
+              {options.map((opt, i) => {
                 const selected = choice === opt.traditional
                 const correct = opt.traditional === quizExample.traditional
                 const show = choice !== null
@@ -135,14 +177,17 @@ export function PatternsPage() {
                     disabled={choice !== null}
                     onClick={() => setChoice(opt.traditional)}
                     className={[
-                      'han rounded-xl border px-3 py-3 text-2xl transition',
+                      'han relative rounded-xl border px-3 py-3 text-2xl transition',
                       show && correct
-                        ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
+                        ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--ink)]'
                         : show && selected
-                          ? 'border-[var(--warn)] bg-[#f3e4dc]'
-                          : 'border-[var(--line)] bg-[var(--mist)]',
+                          ? 'border-[var(--warn)] bg-[#f3e4dc] text-[var(--ink)]'
+                          : 'border-[var(--line)] bg-[var(--mist)] text-[var(--ink)]',
                     ].join(' ')}
                   >
+                    <span className="absolute left-2 top-1 text-[0.65rem] text-[var(--ink-faint)]">
+                      {i + 1}
+                    </span>
                     {opt.traditional}
                   </button>
                 )
@@ -150,12 +195,9 @@ export function PatternsPage() {
             </div>
             {choice !== null ? (
               <div className="mt-4 flex flex-wrap gap-2">
-                <button
-                  type="button"
-                  onClick={completePattern}
-                  className="rounded-full bg-[var(--ink)] px-4 py-2 text-sm text-white"
-                >
-                  Mark pattern done
+                <button type="button" onClick={completePattern} className="btn-primary">
+                  Mark done
+                  <Kbd>Enter</Kbd>
                 </button>
                 <button
                   type="button"
@@ -163,9 +205,10 @@ export function PatternsPage() {
                     setChoice(null)
                     setQuizOpen(false)
                   }}
-                  className="rounded-full border border-[var(--line)] px-4 py-2 text-sm"
+                  className="btn-secondary"
                 >
-                  Close quiz
+                  Close
+                  <Kbd>Esc</Kbd>
                 </button>
               </div>
             ) : null}

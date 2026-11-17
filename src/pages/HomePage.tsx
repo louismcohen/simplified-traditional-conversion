@@ -56,10 +56,10 @@ export function HomePage() {
           until the divergent set feels automatic.
         </p>
         <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-[var(--ink-soft)]">
-          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-[var(--accent)]">
+          <span className="rounded-full border border-[var(--line)] bg-[var(--accent-soft)] px-3 py-1 font-medium text-[var(--accent)]">
             {identicalPairs.length} identical
           </span>
-          <span className="rounded-full bg-[var(--accent-soft)] px-3 py-1 text-[var(--accent)]">
+          <span className="rounded-full border border-[var(--line)] bg-[var(--accent-soft)] px-3 py-1 font-medium text-[var(--accent)]">
             {divergentPairs.length} to learn
           </span>
           <span>
@@ -67,10 +67,7 @@ export function HomePage() {
             {progress.quizBest > 0 ? ` · quiz best ${progress.quizBest}` : ''}
           </span>
         </div>
-        <Link
-          to={continueTo}
-          className="mt-6 inline-flex rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition hover:brightness-110"
-        >
+        <Link to={continueTo} className="btn-primary mt-6">
           Continue studying
         </Link>
       </section>
@@ -90,10 +87,7 @@ export function HomePage() {
                   {method.body}
                 </p>
               </div>
-              <Link
-                to={method.to}
-                className="shrink-0 self-start rounded-full border border-[var(--line)] bg-white/80 px-4 py-2 text-sm text-[var(--ink)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
-              >
+              <Link to={method.to} className="btn-secondary shrink-0 self-start">
                 {method.cta}
               </Link>
             </div>

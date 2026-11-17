@@ -1,15 +1,16 @@
 @import 'tailwindcss';
 
 :root {
-  --ink: #15231f;
-  --ink-soft: #3d524a;
+  --ink: #121c19;
+  --ink-soft: #2c3f38;
+  --ink-faint: #5a6f67;
   --paper: #e8eef0;
   --paper-deep: #d5e0e3;
   --mist: #f3f7f8;
-  --accent: #1f6b5c;
-  --accent-soft: #d4ebe4;
-  --warn: #8a4b2e;
-  --line: rgba(21, 35, 31, 0.12);
+  --accent: #165a4d;
+  --accent-soft: #cfe6df;
+  --warn: #7a3f24;
+  --line: rgba(18, 28, 25, 0.28);
   --serif: 'Instrument Serif', 'Noto Serif TC', serif;
   --han: 'Noto Serif TC', 'Songti TC', serif;
   --sans: 'Source Sans 3', system-ui, sans-serif;
@@ -59,6 +60,7 @@ a {
 
 button {
   font: inherit;
+  color: inherit;
 }
 
 .han {
@@ -67,6 +69,63 @@ button {
 
 .display {
   font-family: var(--serif);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--ink);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.25;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--ink-soft);
+}
+
+.chip-active {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #f5faf8;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #f5faf8;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+  padding: 0.6rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid var(--line);
+}
+
+.btn-secondary:hover {
+  border-color: var(--ink-soft);
 }
 
 @keyframes rise-in {

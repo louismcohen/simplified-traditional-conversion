@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
+import { Kbd } from '../components/Kbd'
 import { divergentPairs } from '../data/hsk1-pairs'
+import { useHotkeys } from '../hooks/useHotkeys'
 import { setQuizBest } from '../lib/progress'
 
 type Mode = 'to-trad' | 'from-trad'
@@ -86,22 +88,41 @@ export function QuizPage() {
     setFinished(false)
   }
 
+  useHotkeys({
+    '1': () => {
+      if (!finished && current && selected === null) choose(current.options[0])
+    },
+    '2': () => {
+      if (!finished && current && selected === null) choose(current.options[1])
+    },
+    '3': () => {
+      if (!finished && current && selected === null) choose(current.options[2])
+    },
+    '4': () => {
+      if (!finished && current && selected === null) choose(current.options[3])
+    },
+    Enter: () => {
+      if (finished) restart()
+      else if (selected !== null) goNext()
+    },
+    n: () => {
+      if (finished) restart()
+    },
+  })
+
   if (finished) {
     const pct = Math.round((score / questions.length) * 100)
     return (
-      <div className="rise-in rounded-2xl border border-[var(--line)] bg-white/65 p-8 text-center">
+      <div className="rise-in rounded-2xl border border-[var(--line)] bg-white/75 p-8 text-center">
         <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">Method 04</p>
         <h2 className="display mt-2 text-3xl">Quiz complete</h2>
         <p className="han mt-4 text-5xl text-[var(--ink)]">
           {score}/{questions.length}
         </p>
         <p className="mt-2 text-[var(--ink-soft)]">{pct}% — best score is saved on this device.</p>
-        <button
-          type="button"
-          onClick={restart}
-          className="mt-6 rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white"
-        >
+        <button type="button" onClick={restart} className="btn-primary mt-6">
           New quiz
+          <Kbd>N</Kbd>
         </button>
       </div>
     )
@@ -109,7 +130,7 @@ export function QuizPage() {
 
   if (!current) {
     return (
-      <div className="rounded-2xl border border-[var(--line)] bg-white/60 p-8 text-center">
+      <div className="rounded-2xl border border-[var(--line)] bg-white/70 p-8 text-center">
         <p className="text-[var(--ink-soft)]">Could not build a quiz. Add more divergent pairs.</p>
       </div>
     )
@@ -117,28 +138,25 @@ export function QuizPage() {
 
   return (
     <div className="rise-in space-y-6">
-      <section className="rounded-2xl border border-[var(--line)] bg-white/60 p-6 backdrop-blur-sm">
+      <section className="rounded-2xl border border-[var(--line)] bg-white/70 p-6 backdrop-blur-sm">
         <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">Method 04</p>
         <h2 className="display mt-2 text-3xl">Recognition ↔ production</h2>
         <p className="mt-2 text-sm text-[var(--ink-soft)]">
-          Question {progressLabel} · score {score}
-          {current.mode === 'to-trad'
-            ? ' · pick the traditional form'
-            : ' · read traditional and pick meaning'}
+          Question {progressLabel} · score {score} · 1–4 to answer
         </p>
       </section>
 
-      <div className="rounded-2xl border border-[var(--line)] bg-white/70 p-6 sm:p-8">
+      <div className="rounded-2xl border border-[var(--line)] bg-white/80 p-6 sm:p-8">
         <p className="text-xs uppercase tracking-[0.18em] text-[var(--ink-soft)]">
           {current.mode === 'to-trad' ? 'Simplified → Traditional' : 'Traditional → Meaning'}
         </p>
-        <p className="han char-pop mt-4 text-center text-7xl font-semibold sm:text-8xl">
+        <p className="han char-pop mt-4 text-center text-7xl font-semibold text-[var(--ink)] sm:text-8xl">
           {current.prompt}
         </p>
         <p className="mt-3 text-center text-sm text-[var(--ink-soft)]">{current.meta}</p>
 
         <div className="mt-8 grid gap-2 sm:grid-cols-2">
-          {current.options.map((option) => {
+          {current.options.map((option, i) => {
             const show = selected !== null
             const correct = option === current.answer
             const picked = option === selected
@@ -149,28 +167,28 @@ export function QuizPage() {
                 disabled={selected !== null}
                 onClick={() => choose(option)}
                 className={[
-                  'rounded-xl border px-4 py-3 text-left transition',
+                  'relative rounded-xl border px-4 py-3 text-left transition',
                   current.mode === 'to-trad' ? 'han text-2xl' : 'text-sm',
                   show && correct
-                    ? 'border-[var(--accent)] bg-[var(--accent-soft)]'
+                    ? 'border-[var(--accent)] bg-[var(--accent-soft)] text-[var(--ink)]'
                     : show && picked
-                      ? 'border-[var(--warn)] bg-[#f3e4dc]'
-                      : 'border-[var(--line)] bg-[var(--mist)] hover:border-[var(--accent)]',
+                      ? 'border-[var(--warn)] bg-[#f3e4dc] text-[var(--ink)]'
+                      : 'border-[var(--line)] bg-[var(--mist)] text-[var(--ink)] hover:border-[var(--ink-soft)]',
                 ].join(' ')}
               >
-                {option}
+                <span className="absolute left-2 top-1.5 text-[0.65rem] font-medium text-[var(--ink-faint)]">
+                  {i + 1}
+                </span>
+                <span className={current.mode === 'to-trad' ? 'pl-3' : 'pl-4'}>{option}</span>
               </button>
             )
           })}
         </div>
 
         {selected !== null ? (
-          <button
-            type="button"
-            onClick={goNext}
-            className="mt-6 rounded-full bg-[var(--ink)] px-5 py-2.5 text-sm font-medium text-white"
-          >
-            {index + 1 >= questions.length ? 'See results' : 'Next question'}
+          <button type="button" onClick={goNext} className="btn-primary mt-6">
+            {index + 1 >= questions.length ? 'See results' : 'Next'}
+            <Kbd>Enter</Kbd>
           </button>
         ) : null}
       </div>

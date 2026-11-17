@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { Kbd } from '../components/Kbd'
 import { PairGlyph } from '../components/PairGlyph'
 import { divergentPairs, identicalPairs, type CharPair } from '../data/hsk1-pairs'
 import { patterns } from '../data/patterns'
+import { useHotkeys } from '../hooks/useHotkeys'
 import { loadProgress, markKnown, markStruggling, resetProgress } from '../lib/progress'
 
 function shuffle<T>(items: T[]): T[] {
@@ -61,6 +63,21 @@ export function DrillPage() {
     setFlipped(false)
   }
 
+  useHotkeys({
+    ' ': () => setFlipped((f) => !f),
+    Enter: () => setFlipped((f) => !f),
+    j: () => {
+      if (mode === 'divergent') onStruggle()
+    },
+    k: () => {
+      if (mode === 'divergent') onKnow()
+      else next()
+    },
+    n: () => next(),
+    r: () => reshuffle(),
+    ArrowRight: () => next(),
+  })
+
   if (!current) {
     return (
       <div className="rounded-2xl border border-[var(--line)] bg-white/60 p-8 text-center">
@@ -76,7 +93,7 @@ export function DrillPage() {
 
   return (
     <div className="rise-in space-y-6">
-      <section className="rounded-2xl border border-[var(--line)] bg-white/60 p-6 backdrop-blur-sm">
+      <section className="rounded-2xl border border-[var(--line)] bg-white/70 p-6 backdrop-blur-sm">
         <p className="text-sm uppercase tracking-[0.2em] text-[var(--accent)]">
           {mode === 'identical' ? 'Method 01' : 'Method 03'}
         </p>
@@ -86,33 +103,21 @@ export function DrillPage() {
         <p className="mt-2 text-sm text-[var(--ink-soft)]">
           {mode === 'identical'
             ? 'Flip through forms that stay the same — then spend your energy on the divergent deck.'
-            : `${knownCount}/${deck.length} marked known · tap the card to reveal traditional.`}
+            : `${knownCount}/${deck.length} marked known · Space to flip.`}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link
-            to="/drill"
-            className={[
-              'rounded-full px-3 py-1.5 text-sm',
-              mode === 'divergent' ? 'bg-[var(--ink)] text-white' : 'border border-[var(--line)]',
-            ].join(' ')}
-          >
+          <Link to="/drill" className={mode === 'divergent' ? 'chip chip-active' : 'chip'}>
             Divergent
           </Link>
           <Link
             to="/drill?mode=identical"
-            className={[
-              'rounded-full px-3 py-1.5 text-sm',
-              mode === 'identical' ? 'bg-[var(--ink)] text-white' : 'border border-[var(--line)]',
-            ].join(' ')}
+            className={mode === 'identical' ? 'chip chip-active' : 'chip'}
           >
             Identical
           </Link>
-          <button
-            type="button"
-            onClick={reshuffle}
-            className="rounded-full border border-[var(--line)] px-3 py-1.5 text-sm"
-          >
+          <button type="button" onClick={reshuffle} className="chip">
             Reshuffle
+            <Kbd>R</Kbd>
           </button>
           {mode === 'divergent' ? (
             <button
@@ -121,9 +126,9 @@ export function DrillPage() {
                 resetProgress()
                 setProgress(loadProgress())
               }}
-              className="rounded-full border border-[var(--line)] px-3 py-1.5 text-sm text-[var(--warn)]"
+              className="chip text-[var(--warn)]"
             >
-              Reset progress
+              Reset
             </button>
           ) : null}
         </div>
@@ -142,13 +147,13 @@ export function DrillPage() {
       <button
         type="button"
         onClick={() => setFlipped((f) => !f)}
-        className="w-full rounded-2xl border border-[var(--line)] bg-white/70 px-4 py-10 text-center shadow-sm transition hover:border-[var(--accent)]"
+        className="w-full rounded-2xl border border-[var(--line)] bg-white/80 px-4 py-10 text-center shadow-sm transition hover:border-[var(--ink-soft)]"
       >
         {!flipped ? (
           <div className="char-pop space-y-3">
             <p className="han text-7xl font-semibold sm:text-8xl">{current.simplified}</p>
-            <p className="text-sm uppercase tracking-[0.18em] text-[var(--ink-soft)]">
-              tap to reveal traditional
+            <p className="text-sm text-[var(--ink-soft)]">
+              Flip <Kbd>Space</Kbd>
             </p>
           </div>
         ) : (
@@ -174,28 +179,19 @@ export function DrillPage() {
       <div className="flex flex-wrap justify-center gap-3">
         {mode === 'divergent' ? (
           <>
-            <button
-              type="button"
-              onClick={onStruggle}
-              className="rounded-full border border-[var(--line)] bg-white/70 px-5 py-2.5 text-sm"
-            >
+            <button type="button" onClick={onStruggle} className="btn-secondary">
               Still learning
+              <Kbd>J</Kbd>
             </button>
-            <button
-              type="button"
-              onClick={onKnow}
-              className="rounded-full bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white"
-            >
+            <button type="button" onClick={onKnow} className="btn-primary">
               Know it
+              <Kbd>K</Kbd>
             </button>
           </>
         ) : (
-          <button
-            type="button"
-            onClick={next}
-            className="rounded-full bg-[var(--ink)] px-5 py-2.5 text-sm font-medium text-white"
-          >
-            Next identical form
+          <button type="button" onClick={next} className="btn-primary">
+            Next
+            <Kbd>N</Kbd>
           </button>
         )}
       </div>
